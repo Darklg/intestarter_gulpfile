@@ -11,15 +11,30 @@ const removeEmptyLines = require('gulp-remove-empty-lines');
 const trimlines = require('gulp-trimlines');
 const gulpStylelint = require('gulp-stylelint');
 const replace = require('gulp-replace');
+const fs = require('fs');
+const Path = require('path');
 
 module.exports = function(sass_files, css_folder, bs) {
     return function intestarter_gulp_style() {
+
+        var sassOptions = {
+            indentType: 'space',
+            indentWidth: 0,
+            functions: {
+                'intestarter-gulp-inline-image($file)': function(_file) {
+                    const filePath = Path.join(process.cwd(), _file.getValue());
+                    const buffer = fs.readFileSync(filePath);
+                    const data = buffer.toString('base64');
+                    const ext = filePath.split('.').pop();
+                    _file.setValue('url(data:image/' + ext + ';base64,' + data + ')')
+                    return _file;
+                }
+            }
+        }
+
         return gulp.src(sass_files)
             .pipe(sassGlob())
-            .pipe(sass({
-                indentType: 'space',
-                indentWidth: 0
-            }).on('error', sass.logError))
+            .pipe(sass(sassOptions).on('error', sass.logError))
             .pipe(autoprefixer({
                 cascade: false
             }))
