@@ -1,6 +1,6 @@
 {
   "name": "intestarter_gulpfile",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Common reusable tasks for gulp",
   "repository": "https://github.com/Darklg/intestarter_gulpfile.git",
   "author": "Darklg <darklg.blog@gmail.com>",

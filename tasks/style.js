@@ -24,9 +24,18 @@ module.exports = function(sass_files, css_folder, bs) {
                 'intestarter-gulp-inline-image($file)': function(_file) {
                     const filePath = Path.join(process.cwd(), _file.getValue());
                     const buffer = fs.readFileSync(filePath);
-                    const data = buffer.toString('base64');
                     const ext = filePath.split('.').pop();
-                    _file.setValue('url(data:image/' + ext + ';base64,' + data + ')')
+                    var data;
+                    if(ext == 'svg') {
+                        data = buffer.toString().replace(/[\n\r]/g, '');
+                        data = data.replace(/"/g, "'");
+                        data = data.replace(/\#/g, '%23');
+                        data = 'url("data:image/svg+xml;utf8,' + data + '")';
+                    }
+                    else {
+                        data = 'url("data:image/' + ext + ';base64,' + buffer.toString('base64') + '")';
+                    }
+                    _file.setValue(data)
                     return _file;
                 }
             }
