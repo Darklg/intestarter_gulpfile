@@ -20,6 +20,7 @@ module.exports = function(sass_files, css_folder, bs) {
         var sassOptions = {
             indentType: 'space',
             indentWidth: 0,
+            silenceDeprecations: ['legacy-js-api'],
             functions: {
                 'intestarter-gulp-inline-image($file)': function(_file) {
                     const filePath = Path.join(process.cwd(), _file.getValue());
