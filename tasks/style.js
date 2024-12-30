@@ -14,7 +14,7 @@ const replace = require('gulp-replace');
 const fs = require('fs');
 const Path = require('path');
 
-module.exports = function(sass_files, css_folder, bs) {
+module.exports = function(sass_files, css_folder, bs, p) {
     return function intestarter_gulp_style() {
 
         var sassOptions = {
@@ -40,6 +40,10 @@ module.exports = function(sass_files, css_folder, bs) {
                     return _file;
                 }
             }
+        }
+
+        if(typeof p === 'object' && p.intestarter_gulpfile_style_silenceDeprecations) {
+            sassOptions.silenceDeprecations = p.intestarter_gulpfile_style_silenceDeprecations;
         }
 
         return gulp.src(sass_files)
